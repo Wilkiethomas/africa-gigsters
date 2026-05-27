@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.DS_Store
+# NOTE: On the Federation, Hostinger's Git deploy wiped any manually-uploaded
+# .env on every push. If you hit that again, you can temporarily commit .env
+# (remove the line below) — but rotate the secrets before going public.
+.env
