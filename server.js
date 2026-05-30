@@ -68,6 +68,7 @@ mongoose.connect(MONGODB_URI)
 // ===================
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/gigs', require('./routes/gigs'));
 
 // Health / debug endpoint — confirms env vars are actually loading on the server.
 app.get('/api/debug', (req, res) => {

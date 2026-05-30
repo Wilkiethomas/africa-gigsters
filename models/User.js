@@ -2,74 +2,73 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 /**
- * Unified account model (Fiverr-style):
- * Every user can BUY. Any user can also "become a seller" by completing
+ * Unified account model.
+ * Every user can buy. Any user can become a seller by completing
  * their freelancer profile, which flips `isSeller` to true.
- * This keeps one identity per person instead of separate buyer/seller logins.
+ *
+ * Sellers must then be VERIFIED before they can publish gigs.
+ * Verification flow: submit -> pending -> verified (or rejected) by admin.
  */
 const userSchema = new mongoose.Schema({
   // ---- Core identity ----
   name: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 2,
-    maxlength: 60
+    type: String, required: true, trim: true, minlength: 2, maxlength: 60
   },
   username: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    minlength: 3,
-    maxlength: 30,
+    type: String, required: true, unique: true, trim: true, lowercase: true,
+    minlength: 3, maxlength: 30,
     match: [/^[a-z0-9_]+$/, 'Username can only contain letters, numbers and underscores']
   },
   email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true
+    type: String, required: true, unique: true, trim: true, lowercase: true
   },
   password: {
-    type: String,
-    required: true,
-    minlength: 6,
-    select: false // never returned by default
+    type: String, required: true, minlength: 6, select: false
   },
 
   // ---- Profile ----
   avatar: { type: String, default: '' },
   bio: { type: String, maxlength: 600, default: '' },
-  country: { type: String, default: '' },          // marketplace-wide, Africa-focused
+  country: { type: String, default: '' },
   languages: [{ type: String }],
 
   // ---- Seller (freelancer) profile ----
   isSeller: { type: Boolean, default: false },
   sellerProfile: {
-    headline: { type: String, default: '' },        // e.g. "Logo & Brand Designer"
+    headline: { type: String, default: '' },
     skills: [{ type: String }],
-    hourlyRate: { type: Number, default: 0 },        // optional, for hourly-style gigs
-    level: {                                         // Fiverr-style seller tiers
+    hourlyRate: { type: Number, default: 0 },
+    level: {
       type: String,
       enum: ['new', 'level_1', 'level_2', 'top_rated'],
       default: 'new'
     },
-    rating: { type: Number, default: 0 },            // avg of order reviews
+    rating: { type: Number, default: 0 },
     reviewCount: { type: Number, default: 0 },
     completedOrders: { type: Number, default: 0 }
   },
 
-  // ---- Account / platform ----
-  role: {
+  // ---- Seller verification (NEW in Lesson 2) ----
+  verificationStatus: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+    enum: ['unverified', 'pending', 'verified', 'rejected'],
+    default: 'unverified'
   },
-  isVerified: { type: Boolean, default: false },     // ID/email verification later
-  balance: { type: Number, default: 0 },             // seller earnings (in cents), payouts later
+  verification: {
+    phone:              { type: String, default: '' },
+    governmentIdType:   { type: String, default: '' },
+    governmentIdNumber: { type: String, default: '' },
+    portfolioUrl:       { type: String, default: '' },
+    notes:              { type: String, default: '' },
+    submittedAt:        { type: Date },
+    reviewedAt:         { type: Date },
+    rejectionReason:    { type: String, default: '' }
+  },
+
+  // ---- Account / platform ----
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  isVerified: { type: Boolean, default: false },
+  balance: { type: Number, default: 0 },
 
   createdAt: { type: Date, default: Date.now }
 }, { timestamps: true });
@@ -81,15 +80,15 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Compare a candidate password against the stored hash
 userSchema.methods.comparePassword = function (candidate) {
   return bcrypt.compare(candidate, this.password);
 };
 
-// Strip sensitive fields from any JSON output
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
+  // Never expose government ID numbers in API responses.
+  if (obj.verification) delete obj.verification.governmentIdNumber;
   return obj;
 };
 

@@ -9,144 +9,104 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --cream:#FBF6EC;
-    --cream-2:#F3EADB;
-    --ink:#1E1B16;
-    --ink-soft:#5A5247;
-    --green:#13543A;       /* deep emerald — trust */
-    --green-600:#0E4530;
-    --terra:#D9622B;       /* terracotta — energy/accent */
-    --terra-soft:#F0A675;
-    --gold:#E0A024;
-    --line:#E4D8C4;
-    --white:#FFFDF8;
-    --shadow:0 18px 40px -22px rgba(30,27,22,.45);
-    --radius:16px;
+    --cream:#FBF6EC; --cream-2:#F3EADB; --ink:#1E1B16; --ink-soft:#5A5247;
+    --green:#13543A; --green-600:#0E4530; --terra:#D9622B; --terra-soft:#F0A675;
+    --gold:#E0A024; --line:#E4D8C4; --white:#FFFDF8;
+    --shadow:0 18px 40px -22px rgba(30,27,22,.45); --radius:16px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{
-    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
-    background:var(--cream);
-    color:var(--ink);
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
   h1,h2,h3,.display{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.1}
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
   .hidden{display:none !important}
 
-  /* ---------- Buttons ---------- */
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    font-family:inherit;font-weight:600;font-size:15px;
-    padding:12px 22px;border-radius:999px;border:none;cursor:pointer;
-    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-  }
+  /* Buttons */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:600;font-size:15px;padding:12px 22px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s, box-shadow .15s, background .15s}
   .btn:active{transform:translateY(1px)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
   .btn-primary{background:var(--green);color:#fff}
-  .btn-primary:hover{background:var(--green-600);box-shadow:0 10px 24px -12px var(--green)}
+  .btn-primary:hover:not(:disabled){background:var(--green-600);box-shadow:0 10px 24px -12px var(--green)}
   .btn-accent{background:var(--terra);color:#fff}
-  .btn-accent:hover{background:#c2531f}
+  .btn-accent:hover:not(:disabled){background:#c2531f}
   .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
   .btn-ghost:hover{border-color:var(--green);color:var(--green)}
+  .btn-danger{background:transparent;color:#9c3211;border:1.5px solid #f0a675}
+  .btn-danger:hover{background:#FBE6DD}
   .btn-sm{padding:9px 16px;font-size:14px}
 
-  /* ---------- Header ---------- */
-  header.site{
-    position:sticky;top:0;z-index:50;
-    background:rgba(251,246,236,.85);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
-  .logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces';font-weight:700;font-size:22px}
-  .logo .mark{
-    width:34px;height:34px;border-radius:10px;
-    background:linear-gradient(135deg,var(--green),var(--terra));
-    display:grid;place-items:center;color:#fff;font-size:18px;
-  }
+  /* Header */
+  header.site{position:sticky;top:0;z-index:50;background:rgba(251,246,236,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px;gap:14px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces';font-weight:700;font-size:22px;cursor:pointer;flex-shrink:0}
+  .logo .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--terra));display:grid;place-items:center;color:#fff;font-size:18px}
   .logo .mark::after{content:'AG'}
-  .logo b{color:var(--green)}
-  .logo span{color:var(--terra)}
-  .nav-actions{display:flex;align-items:center;gap:10px}
+  .logo b{color:var(--green)} .logo span{color:var(--terra)}
+  .nav-mid{flex:1;max-width:520px}
+  .nav-search{display:flex;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:4px 4px 4px 18px;align-items:center}
+  .nav-search input{flex:1;border:none;background:none;font:inherit;font-size:14px;outline:none;color:var(--ink);padding:6px 0}
+  .nav-search button{background:var(--green);color:#fff;border:none;padding:8px 14px;border-radius:999px;font-size:13px;cursor:pointer;font-weight:600}
+  .nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
 
-  /* ---------- Hero ---------- */
+  /* Hero */
   .hero{position:relative;overflow:hidden;padding:72px 0 60px}
-  .hero::before{
-    content:'';position:absolute;inset:0;z-index:0;
-    background:
-      radial-gradient(60% 80% at 85% -10%, rgba(217,98,43,.16), transparent 60%),
-      radial-gradient(50% 70% at 0% 110%, rgba(19,84,58,.14), transparent 60%);
-  }
+  .hero::before{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(60% 80% at 85% -10%, rgba(217,98,43,.16), transparent 60%),radial-gradient(50% 70% at 0% 110%, rgba(19,84,58,.14), transparent 60%)}
   .hero .wrap{position:relative;z-index:1}
   .hero h1{font-size:clamp(38px,6vw,66px);max-width:14ch;letter-spacing:-.01em}
   .hero h1 em{font-style:italic;color:var(--terra)}
   .hero p.sub{margin-top:18px;font-size:clamp(16px,2.2vw,20px);color:var(--ink-soft);max-width:52ch}
-  .hero .cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
-  .search-bar{
-    margin-top:28px;display:flex;background:var(--white);border:1px solid var(--line);
-    border-radius:999px;padding:6px 6px 6px 22px;max-width:560px;box-shadow:var(--shadow);
-  }
+  .search-bar{margin-top:28px;display:flex;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 22px;max-width:560px;box-shadow:var(--shadow)}
   .search-bar input{flex:1;border:none;background:none;font:inherit;font-size:16px;outline:none;color:var(--ink)}
   .pills{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap}
-  .pill{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);
-    padding:6px 14px;border-radius:999px;cursor:pointer}
+  .pill{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);padding:6px 14px;border-radius:999px;cursor:pointer}
   .pill:hover{border-color:var(--terra);color:var(--terra)}
 
-  /* ---------- Categories ---------- */
+  /* Sections */
   .section{padding:54px 0}
   .section h2{font-size:clamp(26px,3.5vw,38px);margin-bottom:6px}
   .section .lead{color:var(--ink-soft);margin-bottom:26px}
   .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
-  .cat{
-    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
-    padding:22px 20px;transition:transform .18s ease, box-shadow .18s ease;cursor:pointer;
-  }
+  .cat{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;transition:transform .18s, box-shadow .18s;cursor:pointer}
   .cat:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .cat .emoji{font-size:26px}
   .cat h3{font-size:17px;margin-top:12px;font-family:'Plus Jakarta Sans';font-weight:700}
   .cat p{font-size:13px;color:var(--ink-soft);margin-top:3px}
 
-  /* ---------- How it works ---------- */
+  .band{background:var(--green);color:#fff}
+  .band .lead{color:rgba(255,255,255,.8)} .band h2{color:#fff}
+
   .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
-  .step{position:relative;padding-left:6px}
   .step .num{font-family:'Fraunces';font-size:40px;color:var(--terra-soft);font-weight:700}
-  .step h3{font-size:19px;margin:6px 0 6px;font-family:'Plus Jakarta Sans';font-weight:700}
+  .step h3{font-size:19px;margin:6px 0;font-family:'Plus Jakarta Sans';font-weight:700}
   .step p{color:var(--ink-soft);font-size:15px}
 
-  .band{background:var(--green);color:#fff}
-  .band .lead{color:rgba(255,255,255,.8)}
-  .band h2{color:#fff}
-
-  /* ---------- Footer ---------- */
   footer.site{border-top:1px solid var(--line);padding:30px 0;color:var(--ink-soft);font-size:14px}
   .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
-  /* ---------- Modal ---------- */
-  .overlay{position:fixed;inset:0;z-index:100;background:rgba(30,27,22,.5);
-    display:grid;place-items:center;padding:20px;backdrop-filter:blur(3px)}
-  .modal{background:var(--white);border-radius:22px;width:100%;max-width:430px;padding:34px;box-shadow:var(--shadow);
-    animation:pop .25s ease}
+  /* Modals */
+  .overlay{position:fixed;inset:0;z-index:100;background:rgba(30,27,22,.5);display:grid;place-items:center;padding:20px;backdrop-filter:blur(3px);overflow-y:auto}
+  .modal{background:var(--white);border-radius:22px;width:100%;max-width:430px;padding:34px;box-shadow:var(--shadow);animation:pop .25s ease;margin:auto}
+  .modal.lg{max-width:640px}
   @keyframes pop{from{transform:translateY(14px) scale(.98);opacity:0}to{transform:none;opacity:1}}
   .modal h2{font-size:28px;margin-bottom:4px}
   .modal .muted{color:var(--ink-soft);font-size:14px;margin-bottom:22px}
   .field{margin-bottom:14px}
   .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink-soft)}
-  .field input{
-    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;
-    font:inherit;font-size:15px;background:var(--cream);outline:none;transition:border .15s
-  }
-  .field input:focus{border-color:var(--green)}
+  .field input,.field textarea,.field select{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;font-size:15px;background:var(--cream);outline:none;transition:border .15s;color:var(--ink)}
+  .field textarea{resize:vertical;min-height:80px;line-height:1.5}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--green)}
+  .field .hint{font-size:12px;color:var(--ink-soft);margin-top:4px}
   .modal .btn{width:100%;margin-top:6px}
   .modal .switch{text-align:center;margin-top:16px;font-size:14px;color:var(--ink-soft)}
   .modal .switch a{color:var(--terra);font-weight:600;cursor:pointer}
   .form-msg{font-size:13.5px;padding:10px 12px;border-radius:10px;margin-bottom:14px;display:none}
   .form-msg.error{display:block;background:#FBE6DD;color:#9c3211;border:1px solid #f0a675}
+  .form-msg.ok{display:block;background:#E4F0E9;color:var(--green-600);border:1px solid #bfdccd}
   .modal-close{float:right;font-size:22px;color:var(--ink-soft);cursor:pointer;line-height:1;margin-top:-8px}
 
-  /* ---------- Dashboard ---------- */
+  /* Dashboard */
   .dash{padding:40px 0}
   .dash .hello{font-size:clamp(28px,4vw,40px)}
   .dash .hello span{color:var(--terra)}
@@ -154,18 +114,84 @@
   .card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
   .card h3{font-family:'Plus Jakarta Sans';font-weight:700;font-size:18px;margin-bottom:8px}
   .card p{color:var(--ink-soft);font-size:14.5px;margin-bottom:16px}
-  .stat-row{display:flex;gap:26px;margin-top:6px}
+  .stat-row{display:flex;gap:26px;margin-top:6px;flex-wrap:wrap}
   .stat .n{font-family:'Fraunces';font-size:30px;font-weight:700;color:var(--green)}
   .stat .l{font-size:13px;color:var(--ink-soft)}
-  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
-    padding:4px 11px;border-radius:999px;background:var(--cream-2);border:1px solid var(--line)}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;background:var(--cream-2);border:1px solid var(--line)}
   .badge.seller{background:#E4F0E9;color:var(--green);border-color:#bfdccd}
-  .avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--terra));
-    display:grid;place-items:center;color:#fff;font-weight:700;font-size:20px}
-  .roadmap li{margin:7px 0;color:var(--ink-soft);font-size:14.5px;list-style:none;padding-left:22px;position:relative}
-  .roadmap li::before{content:'○';position:absolute;left:0;color:var(--terra)}
-  .roadmap li.done::before{content:'●';color:var(--green)}
+  .badge.verified{background:#FFF6E0;color:#7a5500;border-color:#E0A024}
+  .badge.pending{background:#FBE6DD;color:#9c3211;border-color:#f0a675}
+  .badge.draft{background:var(--cream-2);color:var(--ink-soft)}
+  .badge.published{background:#E4F0E9;color:var(--green);border-color:#bfdccd}
+  .badge.paused{background:#FBE6DD;color:#9c3211;border-color:#f0a675}
+  .avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--terra));display:grid;place-items:center;color:#fff;font-weight:700;font-size:20px;flex-shrink:0}
 
+  /* Gig grid (catalog) */
+  .gig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
+  .gig-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform .18s, box-shadow .18s;display:flex;flex-direction:column}
+  .gig-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .gig-card .thumb{aspect-ratio:4/3;background:linear-gradient(135deg,var(--cream-2),var(--terra-soft));display:grid;place-items:center;font-size:46px;color:rgba(255,255,255,.7)}
+  .gig-card .thumb img{width:100%;height:100%;object-fit:cover}
+  .gig-card .info{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:8px}
+  .gig-card .seller-mini{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+  .gig-card .seller-mini .av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--terra));display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700}
+  .gig-card .title{font-size:14.5px;color:var(--ink);font-weight:500;line-height:1.4;flex:1}
+  .gig-card .meta{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line);padding-top:10px;margin-top:auto}
+  .gig-card .rating{font-size:13px;color:var(--ink-soft)}
+  .gig-card .rating b{color:var(--ink)}
+  .gig-card .price{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
+  .gig-card .price b{font-family:'Fraunces';font-size:18px;color:var(--ink);font-weight:700;letter-spacing:0;display:block;text-transform:none}
+
+  /* Browse page */
+  .browse-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .filter-chip{font-size:13px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--white);cursor:pointer;font-weight:600;color:var(--ink-soft);transition:all .15s}
+  .filter-chip:hover{border-color:var(--terra)}
+  .filter-chip.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+  /* Gig detail */
+  .detail{padding:40px 0}
+  .detail .grid{display:grid;grid-template-columns:1fr 360px;gap:36px}
+  @media(max-width:880px){.detail .grid{grid-template-columns:1fr}}
+  .detail h1{font-size:clamp(26px,3.5vw,36px);margin-bottom:14px}
+  .detail .by{display:flex;align-items:center;gap:10px;margin-bottom:24px;color:var(--ink-soft);font-size:14.5px}
+  .gallery{aspect-ratio:16/10;background:linear-gradient(135deg,var(--cream-2),var(--terra-soft));border-radius:var(--radius);display:grid;place-items:center;color:rgba(255,255,255,.7);font-size:80px;margin-bottom:26px;overflow:hidden}
+  .gallery img{width:100%;height:100%;object-fit:cover}
+  .description{font-size:15.5px;line-height:1.7;color:var(--ink-soft);white-space:pre-wrap;margin-bottom:30px}
+  .pkg-tabs{display:flex;background:var(--cream-2);border-radius:14px;padding:4px;margin-bottom:14px}
+  .pkg-tab{flex:1;padding:10px 12px;border-radius:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+  .pkg-tab.active{background:var(--white);color:var(--green);box-shadow:0 2px 6px rgba(0,0,0,.05)}
+  .pkg-panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:24px;position:sticky;top:90px}
+  .pkg-panel .pkg-title{font-family:'Fraunces';font-weight:700;font-size:22px;margin-bottom:4px}
+  .pkg-panel .pkg-price{font-family:'Fraunces';font-weight:700;font-size:32px;color:var(--green);margin:8px 0 12px}
+  .pkg-panel .pkg-desc{color:var(--ink-soft);font-size:14.5px;margin-bottom:18px}
+  .pkg-panel .pkg-meta{display:flex;gap:16px;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:16px}
+  .pkg-panel .pkg-meta b{color:var(--ink);display:block}
+  .pkg-panel .features{list-style:none;margin-bottom:18px}
+  .pkg-panel .features li{padding:4px 0 4px 22px;position:relative;font-size:14px}
+  .pkg-panel .features li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700}
+
+  /* Create gig wizard */
+  .wizard{max-width:760px;margin:30px auto;padding:0 22px}
+  .wizard .card{padding:30px}
+  .wizard h2{margin-bottom:6px}
+  .wizard .muted{color:var(--ink-soft);font-size:14px;margin-bottom:24px}
+  .pkg-builder{border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;background:var(--cream)}
+  .pkg-builder h4{margin-bottom:12px;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-family:'Plus Jakarta Sans';font-weight:700}
+  .pkg-builder .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.pkg-builder .grid2{grid-template-columns:1fr}}
+  .pkg-builder .btn-danger{margin-top:8px}
+  .gigs-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+  .gig-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;background:var(--cream);border:1px solid var(--line);border-radius:12px;flex-wrap:wrap}
+  .gig-row .left{display:flex;align-items:center;gap:14px;flex:1;min-width:240px}
+  .gig-row .left .thumb{width:50px;height:50px;background:linear-gradient(135deg,var(--cream-2),var(--terra-soft));border-radius:8px;flex-shrink:0}
+  .gig-row .meta-row{font-size:13px;color:var(--ink-soft)}
+  .gig-row .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+  @media(max-width:780px){
+    .nav-mid{display:none}
+    .browse-head{gap:10px}
+  }
   @media(max-width:600px){
     .hero{padding:48px 0 40px}
     .nav-actions .btn-ghost{display:none}
@@ -178,32 +204,30 @@
 <!-- ============ HEADER ============ -->
 <header class="site">
   <div class="wrap nav">
-    <a class="logo" href="#" onclick="go('home');return false;">
+    <a class="logo" onclick="go('home')">
       <span class="mark"></span> Africa <b>Gig</b><span>sters</span>
     </a>
-    <div class="nav-actions" id="navActions">
-      <!-- filled by JS depending on auth state -->
+    <div class="nav-mid">
+      <div class="nav-search">
+        <input id="navSearch" placeholder="Search for any service…" onkeydown="if(event.key==='Enter')doSearch()" />
+        <button onclick="doSearch()">Search</button>
+      </div>
     </div>
+    <div class="nav-actions" id="navActions"></div>
   </div>
 </header>
 
-<!-- ============ LANDING VIEW ============ -->
+<!-- ============ LANDING ============ -->
 <main id="view-home">
   <section class="hero">
     <div class="wrap">
       <h1 class="display">Hire Africa's best <em>freelance</em> talent.</h1>
       <p class="sub">From logo design to web development, copywriting to voiceovers — find skilled African freelancers and get your work done, your way.</p>
       <div class="search-bar">
-        <input id="heroSearch" placeholder="Try “logo design” or “WordPress developer”" />
-        <button class="btn btn-primary btn-sm" onclick="requireAuth()">Search</button>
+        <input id="heroSearch" placeholder="Try “logo design” or “WordPress developer”" onkeydown="if(event.key==='Enter')doSearchFromHero()" />
+        <button class="btn btn-primary btn-sm" onclick="doSearchFromHero()">Search</button>
       </div>
-      <div class="pills">
-        <span class="pill" onclick="requireAuth()">Graphic Design</span>
-        <span class="pill" onclick="requireAuth()">Web Development</span>
-        <span class="pill" onclick="requireAuth()">Writing &amp; Translation</span>
-        <span class="pill" onclick="requireAuth()">Video &amp; Animation</span>
-        <span class="pill" onclick="requireAuth()">Digital Marketing</span>
-      </div>
+      <div class="pills" id="heroPills"></div>
     </div>
   </section>
 
@@ -226,48 +250,102 @@
       </div>
     </div>
   </section>
-
-  <section class="section" style="text-align:center">
-    <div class="wrap">
-      <h2 class="display" style="max-width:18ch;margin:0 auto">Got a skill? Start earning today.</h2>
-      <p class="lead" style="max-width:46ch;margin:10px auto 22px">Join as a freelancer and reach clients across Africa and beyond.</p>
-      <button class="btn btn-accent" onclick="requireAuth('register')">Become a Gigster</button>
-    </div>
-  </section>
 </main>
 
-<!-- ============ DASHBOARD VIEW ============ -->
+<!-- ============ DASHBOARD ============ -->
 <main id="view-dash" class="hidden">
   <section class="dash">
     <div class="wrap">
       <h1 class="hello display">Welcome back, <span id="dashName">friend</span> 👋</h1>
-      <p class="lead" id="dashSub" style="color:var(--ink-soft);margin-top:6px"></p>
-
+      <p id="dashSub" style="color:var(--ink-soft);margin-top:6px"></p>
       <div class="dash-grid" id="dashCards"></div>
+    </div>
+  </section>
+</main>
 
-      <div class="card" style="margin-top:18px">
-        <h3>🚧 Build roadmap</h3>
-        <p>The foundation is live. Here's what we layer on next, the same way we grew the Federation.</p>
-        <ul class="roadmap">
-          <li class="done">Accounts &amp; JWT auth (buyer + seller)</li>
-          <li class="done">Profiles &amp; “Become a Gigster” flow</li>
-          <li>Gigs / service listings (the core Fiverr unit)</li>
-          <li>Categories, search &amp; gig detail pages</li>
-          <li>Orders, secure escrow &amp; delivery</li>
-          <li>Reviews, ratings &amp; seller levels</li>
-          <li>Messaging between buyers &amp; sellers</li>
-          <li>Payments (Stripe) &amp; seller payouts</li>
-        </ul>
+<!-- ============ BROWSE GIGS ============ -->
+<main id="view-browse" class="hidden">
+  <section class="section">
+    <div class="wrap">
+      <div class="browse-head">
+        <div>
+          <h2 class="display" id="browseTitle">All Gigs</h2>
+          <p class="lead" id="browseCount">Loading…</p>
+        </div>
+        <div>
+          <select id="sortSelect" class="filter-chip" style="padding:10px 14px" onchange="loadGigs()">
+            <option value="recent">Newest</option>
+            <option value="rating">Highest rated</option>
+            <option value="popular">Most popular</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-bar" id="categoryFilter"></div>
+      <div class="gig-grid" id="gigGrid"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ GIG DETAIL ============ -->
+<main id="view-gig" class="hidden">
+  <section class="detail">
+    <div class="wrap">
+      <div class="grid">
+        <div>
+          <h1 class="display" id="gigTitle"></h1>
+          <div class="by" id="gigBy"></div>
+          <div class="gallery" id="gigGallery">🎨</div>
+          <h3 style="font-family:'Plus Jakarta Sans';font-weight:700;margin-bottom:10px">About this gig</h3>
+          <div class="description" id="gigDesc"></div>
+          <div id="gigFaqs"></div>
+        </div>
+        <div>
+          <div class="pkg-panel">
+            <div class="pkg-tabs" id="pkgTabs"></div>
+            <div id="pkgBody"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+</main>
+
+<!-- ============ CREATE GIG WIZARD ============ -->
+<main id="view-create" class="hidden">
+  <div class="wizard">
+    <div class="card">
+      <h2 class="display">Create a gig</h2>
+      <p class="muted">Describe the service you offer. You can save as draft and publish later (after verification).</p>
+      <div class="form-msg" id="createMsg"></div>
+
+      <div class="field"><label>Gig title (15–80 characters)</label>
+        <input id="cTitle" placeholder="e.g. I will design a modern minimalist logo for your brand" maxlength="80" />
+        <div class="hint">Start with “I will…” to follow marketplace convention.</div></div>
+
+      <div class="field"><label>Category</label>
+        <select id="cCategory"></select></div>
+
+      <div class="field"><label>Tags (comma separated, up to 5)</label>
+        <input id="cTags" placeholder="logo, branding, minimalist" /></div>
+
+      <div class="field"><label>Description (100–1200 characters)</label>
+        <textarea id="cDesc" rows="6" maxlength="1200" placeholder="Describe what's included, your process, what makes you different…"></textarea></div>
+
+      <h3 style="margin-top:8px;margin-bottom:10px;font-family:'Plus Jakarta Sans';font-weight:700">Packages</h3>
+      <p class="muted" style="margin-top:-4px">Add 1, 2, or 3 pricing tiers.</p>
+
+      <div id="pkgBuilders"></div>
+      <button class="btn btn-ghost btn-sm" id="addPkgBtn" onclick="addPackage()" style="margin-top:6px">+ Add another package</button>
+
+      <button class="btn btn-primary" style="margin-top:24px;width:100%" onclick="createGig()">Save as draft</button>
+    </div>
+  </div>
 </main>
 
 <!-- ============ AUTH MODAL ============ -->
 <div class="overlay hidden" id="authOverlay">
   <div class="modal">
     <span class="modal-close" onclick="closeAuth()">&times;</span>
-    <!-- LOGIN -->
     <div id="loginForm">
       <h2 class="display">Welcome back</h2>
       <p class="muted">Log in to your Africa Gigsters account.</p>
@@ -277,7 +355,6 @@
       <button class="btn btn-primary" onclick="doLogin()">Log in</button>
       <p class="switch">New here? <a onclick="showRegister()">Create an account</a></p>
     </div>
-    <!-- REGISTER -->
     <div id="registerForm" class="hidden">
       <h2 class="display">Join the marketplace</h2>
       <p class="muted">Create an account to hire or to sell your skills.</p>
@@ -292,41 +369,56 @@
   </div>
 </div>
 
-<!-- ============ FOOTER ============ -->
+<!-- ============ VERIFICATION MODAL ============ -->
+<div class="overlay hidden" id="verifyOverlay">
+  <div class="modal lg">
+    <span class="modal-close" onclick="closeVerify()">&times;</span>
+    <h2 class="display">Verify your seller account</h2>
+    <p class="muted">We verify sellers to keep the marketplace safe. Submissions are usually reviewed within 1–2 days.</p>
+    <div class="form-msg" id="verifyMsg"></div>
+    <div class="field"><label>Phone number</label>
+      <input id="vPhone" placeholder="+234 800 000 0000" /></div>
+    <div class="field"><label>Government ID type</label>
+      <select id="vIdType">
+        <option value="passport">Passport</option>
+        <option value="national_id">National ID</option>
+        <option value="drivers_license">Driver's license</option>
+      </select></div>
+    <div class="field"><label>ID number</label>
+      <input id="vIdNumber" placeholder="ID number on the document" />
+      <div class="hint">Stored encrypted. Only our review team can see it.</div></div>
+    <div class="field"><label>Portfolio URL (optional)</label>
+      <input id="vPortfolio" placeholder="https://your-portfolio.com" /></div>
+    <div class="field"><label>Anything else you'd like us to know?</label>
+      <textarea id="vNotes" rows="3" placeholder="Optional"></textarea></div>
+    <button class="btn btn-primary" onclick="submitVerification()">Submit for review</button>
+  </div>
+</div>
+
 <footer class="site">
   <div class="wrap foot">
     <span>© 2026 Africa Gigsters — built for African talent.</span>
-    <span>v1.0 · Foundation</span>
+    <span id="footVersion">v1.1 · Marketplace catalogue</span>
   </div>
 </footer>
 
 <script>
 /* ============================================================
-   Africa Gigsters — frontend foundation
-   Auth state in localStorage, fetch helper, view routing.
+   Africa Gigsters — frontend (Lesson 2: Gigs & catalogue)
    ============================================================ */
-const API = ''; // same origin
+const API = '';
 let token = localStorage.getItem('ag_token') || null;
 let currentUser = null;
-
-const CATEGORIES = [
-  {emoji:'🎨', name:'Graphic Design', desc:'Logos, branding, illustration'},
-  {emoji:'💻', name:'Web Development', desc:'Sites, apps, fixes'},
-  {emoji:'✍️', name:'Writing', desc:'Articles, copy, translation'},
-  {emoji:'🎬', name:'Video & Animation', desc:'Editing, motion, intros'},
-  {emoji:'📈', name:'Digital Marketing', desc:'Social, SEO, ads'},
-  {emoji:'🎙️', name:'Music & Audio', desc:'Voiceover, mixing, jingles'},
-  {emoji:'📱', name:'Mobile Apps', desc:'Android & iOS builds'},
-  {emoji:'💼', name:'Business', desc:'Plans, VA, data entry'},
-];
+let CATEGORIES = [];
+let currentGig = null;
+let currentFilter = { q: '', category: '' };
 
 /* ---------- API helper ---------- */
 async function api(path, method = 'GET', body) {
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = 'Bearer ' + token;
   const res = await fetch(API + path, {
-    method,
-    headers,
+    method, headers,
     body: body ? JSON.stringify(body) : undefined
   });
   const data = await res.json().catch(() => ({}));
@@ -336,8 +428,9 @@ async function api(path, method = 'GET', body) {
 
 /* ---------- View routing ---------- */
 function go(view) {
-  document.getElementById('view-home').classList.toggle('hidden', view !== 'home');
-  document.getElementById('view-dash').classList.toggle('hidden', view !== 'dash');
+  ['home','dash','browse','gig','create'].forEach(v => {
+    document.getElementById('view-' + v).classList.toggle('hidden', v !== view);
+  });
   window.scrollTo(0, 0);
 }
 
@@ -349,58 +442,47 @@ function openAuth(mode) {
 function closeAuth(){ document.getElementById('authOverlay').classList.add('hidden'); }
 function showLogin(){ document.getElementById('loginForm').classList.remove('hidden'); document.getElementById('registerForm').classList.add('hidden'); }
 function showRegister(){ document.getElementById('registerForm').classList.remove('hidden'); document.getElementById('loginForm').classList.add('hidden'); }
-function requireAuth(mode){ currentUser ? go('dash') : openAuth(mode || 'register'); }
+function requireAuth(mode){ if(currentUser) return true; openAuth(mode || 'register'); return false; }
+function showMsg(id, text, type='error'){ const el = document.getElementById(id); el.textContent = text; el.classList.remove('error','ok'); el.classList.add(type); el.style.display='block'; }
+function clearMsg(id){ const el = document.getElementById(id); el.textContent=''; el.classList.remove('error','ok'); el.style.display='none'; }
 
-function showMsg(id, text){ const el = document.getElementById(id); el.textContent = text; el.classList.add('error'); }
-function clearMsg(id){ const el = document.getElementById(id); el.textContent=''; el.classList.remove('error'); }
-
-/* ---------- Register ---------- */
+/* ---------- Register / Login / Logout ---------- */
 async function doRegister(){
   clearMsg('regMsg');
   try {
     const data = await api('/api/auth/register', 'POST', {
-      name: regName.value.trim(),
-      username: regUsername.value.trim(),
-      email: regEmail.value.trim(),
-      password: regPassword.value
+      name: regName.value.trim(), username: regUsername.value.trim(),
+      email: regEmail.value.trim(), password: regPassword.value
     });
     setSession(data.token, data.user);
   } catch(e){ showMsg('regMsg', e.message); }
 }
-
-/* ---------- Login ---------- */
 async function doLogin(){
   clearMsg('loginMsg');
   try {
     const data = await api('/api/auth/login', 'POST', {
-      email: loginEmail.value.trim(),
-      password: loginPassword.value
+      email: loginEmail.value.trim(), password: loginPassword.value
     });
     setSession(data.token, data.user);
   } catch(e){ showMsg('loginMsg', e.message); }
 }
-
-/* ---------- Session ---------- */
 function setSession(t, user){
   token = t; currentUser = user;
   localStorage.setItem('ag_token', t);
   closeAuth();
-  renderNav();
-  renderDash();
-  go('dash');
+  renderNav(); renderDash(); go('dash');
 }
 function logout(){
   token = null; currentUser = null;
   localStorage.removeItem('ag_token');
-  renderNav();
-  go('home');
+  renderNav(); go('home');
 }
 
-/* ---------- Become a seller ---------- */
+/* ---------- Become seller ---------- */
 async function becomeSeller(){
   const headline = prompt('Your professional headline (e.g. "Logo & Brand Designer")');
   if (!headline) return;
-  const skillsRaw = prompt('Your top skills, comma separated (e.g. Logo Design, Branding, Figma)');
+  const skillsRaw = prompt('Your top skills, comma separated');
   if (!skillsRaw) return;
   const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
   try {
@@ -410,40 +492,312 @@ async function becomeSeller(){
   } catch(e){ alert(e.message); }
 }
 
-/* ---------- Render: nav ---------- */
+/* ---------- Verification ---------- */
+function openVerify(){
+  if (!currentUser.isSeller){ alert('Activate your seller profile first.'); return; }
+  document.getElementById('verifyOverlay').classList.remove('hidden');
+  clearMsg('verifyMsg');
+}
+function closeVerify(){ document.getElementById('verifyOverlay').classList.add('hidden'); }
+async function submitVerification(){
+  clearMsg('verifyMsg');
+  try {
+    const data = await api('/api/users/submit-verification', 'POST', {
+      phone: vPhone.value.trim(),
+      governmentIdType: vIdType.value,
+      governmentIdNumber: vIdNumber.value.trim(),
+      portfolioUrl: vPortfolio.value.trim(),
+      notes: vNotes.value.trim()
+    });
+    currentUser = data.user;
+    closeVerify();
+    renderDash();
+    alert('Verification submitted! We\'ll review it within 1–2 days.');
+  } catch(e){ showMsg('verifyMsg', e.message); }
+}
+
+/* ---------- Search ---------- */
+function doSearch(){ const q = navSearch.value.trim(); currentFilter = { q, category: '' }; loadGigs(); go('browse'); }
+function doSearchFromHero(){ const q = heroSearch.value.trim(); currentFilter = { q, category: '' }; loadGigs(); go('browse'); }
+function browseCategory(slug){ currentFilter = { q: '', category: slug }; loadGigs(); go('browse'); }
+
+/* ---------- Load catalog ---------- */
+async function loadGigs(){
+  const params = new URLSearchParams();
+  if (currentFilter.q) params.set('q', currentFilter.q);
+  if (currentFilter.category) params.set('category', currentFilter.category);
+  const sortEl = document.getElementById('sortSelect');
+  if (sortEl) params.set('sort', sortEl.value);
+
+  // Title
+  let title = 'All gigs';
+  if (currentFilter.q) title = `Results for “${currentFilter.q}”`;
+  else if (currentFilter.category) {
+    const cat = CATEGORIES.find(c => c.slug === currentFilter.category);
+    title = cat ? `${cat.emoji} ${cat.name}` : currentFilter.category;
+  }
+  document.getElementById('browseTitle').textContent = title;
+  document.getElementById('browseCount').textContent = 'Loading…';
+  document.getElementById('gigGrid').innerHTML = '';
+
+  // Render category chips
+  renderCategoryFilter();
+
+  try {
+    const data = await api('/api/gigs?' + params.toString());
+    document.getElementById('browseCount').textContent =
+      `${data.total} gig${data.total === 1 ? '' : 's'} found`;
+    if (data.gigs.length === 0){
+      document.getElementById('gigGrid').innerHTML =
+        '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--ink-soft)">No gigs yet in this view. Be the first to list one!</div>';
+      return;
+    }
+    document.getElementById('gigGrid').innerHTML = data.gigs.map(renderGigCard).join('');
+  } catch(e){
+    document.getElementById('browseCount').textContent = 'Could not load gigs.';
+  }
+}
+
+function renderCategoryFilter(){
+  const bar = document.getElementById('categoryFilter');
+  bar.innerHTML = '<button class="filter-chip ' + (!currentFilter.category ? 'active' : '') +
+    '" onclick="currentFilter.category=\'\';loadGigs()">All</button>' +
+    CATEGORIES.map(c => `<button class="filter-chip ${currentFilter.category===c.slug?'active':''}" onclick="currentFilter.category='${c.slug}';loadGigs()">${c.emoji} ${c.name}</button>`).join('');
+}
+
+function renderGigCard(g){
+  const seller = g.seller || {};
+  const initials = (seller.name||'?').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  const start = (g.startingPrice || 0) / 100;
+  const rating = g.rating ? g.rating.toFixed(1) : '—';
+  return `
+    <div class="gig-card" onclick="openGig('${g.slug}')">
+      <div class="thumb">🎨</div>
+      <div class="info">
+        <div class="seller-mini"><div class="av">${initials}</div>${seller.name || 'Seller'}</div>
+        <div class="title">${escapeHtml(g.title)}</div>
+        <div class="meta">
+          <div class="rating">★ <b>${rating}</b> (${g.reviewCount||0})</div>
+          <div class="price">From <b>$${start.toFixed(2)}</b></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ---------- Gig detail ---------- */
+async function openGig(slug){
+  go('gig');
+  document.getElementById('gigTitle').textContent = 'Loading…';
+  document.getElementById('gigBy').textContent = '';
+  document.getElementById('gigDesc').textContent = '';
+  document.getElementById('pkgTabs').innerHTML = '';
+  document.getElementById('pkgBody').innerHTML = '';
+  try {
+    const data = await api('/api/gigs/' + encodeURIComponent(slug));
+    currentGig = data.gig;
+    renderGigDetail(data.gig);
+  } catch(e){
+    document.getElementById('gigTitle').textContent = 'Gig not found';
+    document.getElementById('gigDesc').textContent = e.message;
+  }
+}
+function renderGigDetail(g){
+  document.getElementById('gigTitle').textContent = g.title;
+  const seller = g.seller || {};
+  const initials = (seller.name||'?').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('gigBy').innerHTML =
+    `<div class="av" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--terra));display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700">${initials}</div>
+     <div>By <b>${seller.name||'Seller'}</b> · @${seller.username||''}${seller.country?' · '+seller.country:''}</div>`;
+
+  document.getElementById('gigDesc').textContent = g.description;
+
+  // FAQs
+  const faqsEl = document.getElementById('gigFaqs');
+  if (g.faqs && g.faqs.length){
+    faqsEl.innerHTML = '<h3 style="font-family:Plus Jakarta Sans;font-weight:700;margin-top:30px;margin-bottom:12px">FAQ</h3>' +
+      g.faqs.map(f => `<div style="margin-bottom:14px"><b>${escapeHtml(f.question)}</b><div style="color:var(--ink-soft);margin-top:4px">${escapeHtml(f.answer)}</div></div>`).join('');
+  } else { faqsEl.innerHTML = ''; }
+
+  // Packages
+  const tabs = document.getElementById('pkgTabs');
+  const body = document.getElementById('pkgBody');
+  tabs.innerHTML = g.packages.map((p, i) => `<div class="pkg-tab ${i===0?'active':''}" onclick="showPkg(${i})">${p.tier}</div>`).join('');
+  showPkg(0);
+}
+function showPkg(i){
+  const g = currentGig;
+  const tabs = document.querySelectorAll('.pkg-tab');
+  tabs.forEach((t, idx) => t.classList.toggle('active', idx === i));
+  const p = g.packages[i];
+  const features = (p.features||[]).map(f => `<li>${escapeHtml(f)}</li>`).join('');
+  document.getElementById('pkgBody').innerHTML = `
+    <div class="pkg-title">${escapeHtml(p.title)}</div>
+    <div class="pkg-price">$${(p.price/100).toFixed(2)}</div>
+    <div class="pkg-desc">${escapeHtml(p.description)}</div>
+    <div class="pkg-meta">
+      <div style="flex:1"><b>${p.deliveryDays} day${p.deliveryDays===1?'':'s'}</b>delivery</div>
+      <div style="flex:1"><b>${p.revisions}</b>revision${p.revisions===1?'':'s'}</div>
+    </div>
+    ${features ? `<ul class="features">${features}</ul>` : ''}
+    <button class="btn btn-primary" style="width:100%" onclick="orderGig(${i})">Continue ($${(p.price/100).toFixed(2)})</button>`;
+}
+function orderGig(idx){
+  if (!requireAuth()) return;
+  alert('Order flow ships in the next lesson — escrow, delivery, reviews. For now, the catalog is live!');
+}
+
+/* ---------- Create gig wizard ---------- */
+let packagesDraft = [];
+function openCreate(){
+  if (!currentUser.isSeller){
+    alert('Activate your seller profile first, then come back to create a gig.');
+    return;
+  }
+  packagesDraft = [{ tier:'basic', title:'', description:'', price:'', deliveryDays:3, revisions:1, features:'' }];
+  // Populate category dropdown
+  document.getElementById('cCategory').innerHTML = CATEGORIES.map(c => `<option value="${c.slug}">${c.emoji} ${c.name}</option>`).join('');
+  // Reset fields
+  ['cTitle','cTags','cDesc'].forEach(id => document.getElementById(id).value = '');
+  clearMsg('createMsg');
+  renderPkgBuilders();
+  go('create');
+}
+function renderPkgBuilders(){
+  const container = document.getElementById('pkgBuilders');
+  container.innerHTML = packagesDraft.map((p, i) => `
+    <div class="pkg-builder">
+      <h4>${p.tier} package</h4>
+      <div class="field"><label>Title</label><input value="${escapeAttr(p.title)}" oninput="updatePkg(${i},'title',this.value)" placeholder="e.g. Starter logo" /></div>
+      <div class="field"><label>Description</label><textarea oninput="updatePkg(${i},'description',this.value)" rows="2" placeholder="What's included">${escapeHtml(p.description)}</textarea></div>
+      <div class="grid2">
+        <div class="field"><label>Price (USD)</label><input type="number" min="5" value="${p.price}" oninput="updatePkg(${i},'price',this.value)" placeholder="25" /></div>
+        <div class="field"><label>Delivery (days)</label><input type="number" min="1" max="90" value="${p.deliveryDays}" oninput="updatePkg(${i},'deliveryDays',this.value)" /></div>
+        <div class="field"><label>Revisions</label><input type="number" min="0" max="20" value="${p.revisions}" oninput="updatePkg(${i},'revisions',this.value)" /></div>
+        <div class="field"><label>Features (comma separated)</label><input value="${escapeAttr(p.features)}" oninput="updatePkg(${i},'features',this.value)" placeholder="Source files, 3 concepts" /></div>
+      </div>
+      ${packagesDraft.length > 1 ? `<button class="btn btn-danger btn-sm" onclick="removePkg(${i})">Remove this package</button>` : ''}
+    </div>`).join('');
+  document.getElementById('addPkgBtn').style.display = packagesDraft.length >= 3 ? 'none' : 'inline-flex';
+}
+function updatePkg(i, field, value){ packagesDraft[i][field] = value; }
+function addPackage(){
+  if (packagesDraft.length >= 3) return;
+  const tiers = ['basic','standard','premium'];
+  const used = packagesDraft.map(p => p.tier);
+  const nextTier = tiers.find(t => !used.includes(t));
+  packagesDraft.push({ tier: nextTier, title:'', description:'', price:'', deliveryDays:3, revisions:1, features:'' });
+  renderPkgBuilders();
+}
+function removePkg(i){
+  packagesDraft.splice(i, 1);
+  renderPkgBuilders();
+}
+async function createGig(){
+  clearMsg('createMsg');
+  try {
+    const packages = packagesDraft.map(p => ({
+      tier: p.tier,
+      title: p.title.trim(),
+      description: p.description.trim(),
+      price: Math.round(parseFloat(p.price) * 100),  // dollars -> cents
+      deliveryDays: parseInt(p.deliveryDays),
+      revisions: parseInt(p.revisions),
+      features: p.features.split(',').map(f=>f.trim()).filter(Boolean)
+    }));
+    const tags = cTags.value.split(',').map(t=>t.trim()).filter(Boolean).slice(0,5);
+    const data = await api('/api/gigs', 'POST', {
+      title: cTitle.value.trim(),
+      description: cDesc.value.trim(),
+      category: cCategory.value,
+      tags,
+      packages
+    });
+    showMsg('createMsg', 'Gig saved as draft! Verify your account to publish it.', 'ok');
+    // Refresh dashboard so the new gig shows up
+    loadMyGigs();
+    setTimeout(() => go('dash'), 1500);
+  } catch(e){ showMsg('createMsg', e.message); }
+}
+
+/* ---------- My gigs (dashboard) ---------- */
+let myGigs = [];
+async function loadMyGigs(){
+  if (!currentUser || !currentUser.isSeller) return;
+  try {
+    const data = await api('/api/gigs/my');
+    myGigs = data.gigs;
+    renderDash();
+  } catch(e){ /* silent */ }
+}
+async function publishGig(id){
+  try {
+    await api('/api/gigs/' + id + '/publish', 'POST');
+    await loadMyGigs();
+  } catch(e){
+    if (e.message.includes('verification')){
+      alert('Complete seller verification before publishing. Open the dashboard to start.');
+    } else { alert(e.message); }
+  }
+}
+async function pauseGig(id){
+  try { await api('/api/gigs/' + id + '/pause', 'POST'); await loadMyGigs(); }
+  catch(e){ alert(e.message); }
+}
+async function deleteGig(id){
+  if (!confirm('Delete this gig? This cannot be undone.')) return;
+  try { await api('/api/gigs/' + id, 'DELETE'); await loadMyGigs(); }
+  catch(e){ alert(e.message); }
+}
+
+/* ---------- Nav ---------- */
 function renderNav(){
   const el = document.getElementById('navActions');
   if (currentUser){
     el.innerHTML = `
+      <button class="btn btn-ghost btn-sm" onclick="loadGigs();go('browse')">Browse</button>
       <button class="btn btn-ghost btn-sm" onclick="go('dash')">Dashboard</button>
       <button class="btn btn-primary btn-sm" onclick="logout()">Log out</button>`;
   } else {
     el.innerHTML = `
+      <button class="btn btn-ghost btn-sm" onclick="loadGigs();go('browse')">Browse</button>
       <button class="btn btn-ghost btn-sm" onclick="openAuth('login')">Log in</button>
       <button class="btn btn-primary btn-sm" onclick="openAuth('register')">Join</button>`;
   }
 }
 
-/* ---------- Render: categories ---------- */
-function renderCategories(){
+/* ---------- Categories on landing ---------- */
+function renderLandingCategories(){
   document.getElementById('catGrid').innerHTML = CATEGORIES.map(c => `
-    <div class="cat" onclick="requireAuth()">
+    <div class="cat" onclick="browseCategory('${c.slug}')">
       <div class="emoji">${c.emoji}</div>
       <h3>${c.name}</h3>
-      <p>${c.desc}</p>
+      <p>Find skilled freelancers</p>
     </div>`).join('');
+  document.getElementById('heroPills').innerHTML = CATEGORIES.slice(0,5).map(c =>
+    `<span class="pill" onclick="browseCategory('${c.slug}')">${c.name}</span>`).join('');
 }
 
-/* ---------- Render: dashboard ---------- */
+/* ---------- Dashboard ---------- */
 function renderDash(){
   if (!currentUser) return;
   document.getElementById('dashName').textContent = currentUser.name.split(' ')[0];
   const sp = currentUser.sellerProfile || {};
+  const vs = currentUser.verificationStatus || 'unverified';
   document.getElementById('dashSub').textContent = currentUser.isSeller
     ? sp.headline || 'Your seller profile is active.'
     : 'You can hire talent now — or set up a seller profile to start earning.';
 
   const initials = currentUser.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+
+  let badges = '';
+  if (currentUser.isSeller){
+    badges += '<span class="badge seller">✓ Gigster (Seller)</span> ';
+    if (vs === 'verified') badges += '<span class="badge verified">✓ Verified</span>';
+    else if (vs === 'pending') badges += '<span class="badge pending">⏳ Verification pending</span>';
+    else if (vs === 'rejected') badges += '<span class="badge pending">✗ Verification rejected</span>';
+    else badges += '<span class="badge">Not verified</span>';
+  } else { badges = '<span class="badge">Buyer account</span>'; }
+
   let cards = `
     <div class="card">
       <div style="display:flex;align-items:center;gap:14px">
@@ -453,21 +807,27 @@ function renderDash(){
           <div style="color:var(--ink-soft);font-size:14px">@${currentUser.username}</div>
         </div>
       </div>
-      <div style="margin-top:14px">
-        ${currentUser.isSeller ? '<span class="badge seller">✓ Gigster (Seller)</span>' : '<span class="badge">Buyer account</span>'}
-      </div>
+      <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px">${badges}</div>
     </div>`;
 
+  // Seller card
   if (currentUser.isSeller){
+    let verifyAction = '';
+    if (vs === 'unverified' || vs === 'rejected'){
+      verifyAction = '<button class="btn btn-accent btn-sm" onclick="openVerify()">Verify your account</button>';
+    } else if (vs === 'pending'){
+      verifyAction = '<button class="btn btn-ghost btn-sm" disabled>Verification submitted</button>';
+    }
     cards += `
       <div class="card">
-        <h3>Your seller stats</h3>
+        <h3>Seller stats</h3>
         <p>${(sp.skills||[]).join(' · ') || 'No skills listed yet'}</p>
         <div class="stat-row">
           <div class="stat"><div class="n">${sp.completedOrders||0}</div><div class="l">Orders</div></div>
           <div class="stat"><div class="n">${(sp.rating||0).toFixed(1)}</div><div class="l">Rating</div></div>
-          <div class="stat"><div class="n">${sp.reviewCount||0}</div><div class="l">Reviews</div></div>
+          <div class="stat"><div class="n">${myGigs.filter(g=>g.status==='published').length}</div><div class="l">Live gigs</div></div>
         </div>
+        ${verifyAction ? '<div style="margin-top:16px">'+verifyAction+'</div>' : ''}
       </div>`;
   } else {
     cards += `
@@ -478,31 +838,79 @@ function renderDash(){
       </div>`;
   }
 
+  // Browse card (always)
   cards += `
     <div class="card">
       <h3>Find work to hire 🔎</h3>
-      <p>Gig browsing & search arrive in the next build phase. The marketplace catalog is coming.</p>
-      <button class="btn btn-ghost btn-sm" onclick="alert('Gigs catalog ships in the next phase!')">Browse gigs</button>
+      <p>Browse the marketplace catalogue and find freelancers across Africa.</p>
+      <button class="btn btn-ghost btn-sm" onclick="loadGigs();go('browse')">Browse gigs</button>
     </div>`;
+
+  // My gigs section (sellers only)
+  if (currentUser.isSeller){
+    cards += `
+      <div class="card" style="grid-column:1/-1">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:10px">
+          <h3 style="margin:0">My gigs</h3>
+          <button class="btn btn-primary btn-sm" onclick="openCreate()">+ Create a gig</button>
+        </div>
+        <p style="margin-bottom:0">${myGigs.length === 0 ? "You haven't created any gigs yet." : `${myGigs.length} total · ${myGigs.filter(g=>g.status==='published').length} live`}</p>
+        ${myGigs.length > 0 ? '<div class="gigs-list">' + myGigs.map(renderMyGigRow).join('') + '</div>' : ''}
+      </div>`;
+  }
 
   document.getElementById('dashCards').innerHTML = cards;
 }
 
+function renderMyGigRow(g){
+  const start = (g.startingPrice || 0) / 100;
+  const statusBadge = `<span class="badge ${g.status}">${g.status}</span>`;
+  let actions = '';
+  if (g.status === 'draft' || g.status === 'paused'){
+    actions += `<button class="btn btn-primary btn-sm" onclick="publishGig('${g._id}')">Publish</button>`;
+  }
+  if (g.status === 'published'){
+    actions += `<button class="btn btn-ghost btn-sm" onclick="pauseGig('${g._id}')">Pause</button>`;
+    actions += `<button class="btn btn-ghost btn-sm" onclick="openGig('${g.slug}')">View</button>`;
+  }
+  actions += `<button class="btn btn-danger btn-sm" onclick="deleteGig('${g._id}')">Delete</button>`;
+  return `
+    <div class="gig-row">
+      <div class="left">
+        <div class="thumb"></div>
+        <div>
+          <div style="font-weight:600">${escapeHtml(g.title)}</div>
+          <div class="meta-row">${statusBadge} · From $${start.toFixed(2)}</div>
+        </div>
+      </div>
+      <div class="actions">${actions}</div>
+    </div>`;
+}
+
+/* ---------- Helpers ---------- */
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return escapeHtml(s); }
+
 /* ---------- Boot ---------- */
 async function init(){
-  renderCategories();
+  // Load categories
+  try {
+    const data = await api('/api/gigs/meta/categories');
+    CATEGORIES = data.categories;
+  } catch(e){ CATEGORIES = []; }
+
+  renderLandingCategories();
   renderNav();
+
   if (token){
     try {
       const data = await api('/api/auth/me');
       currentUser = data.user;
       renderNav();
+      await loadMyGigs();
       renderDash();
       go('dash');
-    } catch(e){
-      // token expired/invalid
-      logout();
-    }
+    } catch(e){ logout(); }
   }
 }
 init();
