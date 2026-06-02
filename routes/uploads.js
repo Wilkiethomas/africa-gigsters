@@ -26,6 +26,10 @@ const upload = multer({
 /**
  * Lazy-init the R2 client. The server can boot fine without R2 credentials —
  * the upload routes will just refuse with a clean error until they're set.
+ *
+ * IMPORTANT: For EU / FedRAMP buckets, Cloudflare requires a jurisdiction-
+ * specific endpoint (e.g. <account>.eu.r2.cloudflarestorage.com). We pick
+ * that up from the optional R2_JURISDICTION env var.
  */
 let s3 = null;
 function getS3() {
@@ -33,9 +37,11 @@ function getS3() {
   if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY || !process.env.R2_SECRET_KEY) {
     return null;
   }
+  const jurisdiction = (process.env.R2_JURISDICTION || '').toLowerCase().trim();
+  const sub = jurisdiction ? `${jurisdiction}.` : '';   // 'eu.' or 'fedramp.' or ''
   s3 = new S3Client({
     region: 'auto',
-    endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    endpoint: `https://${process.env.R2_ACCOUNT_ID}.${sub}r2.cloudflarestorage.com`,
     credentials: {
       accessKeyId: process.env.R2_ACCESS_KEY,
       secretAccessKey: process.env.R2_SECRET_KEY
