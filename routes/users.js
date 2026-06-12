@@ -90,7 +90,7 @@ router.post('/submit-verification', auth, async (req, res) => {
 router.get('/admin/verifications/pending', auth, adminOnly, async (req, res) => {
   try {
     const users = await User.find({ verificationStatus: 'pending' })
-      .select('+verification.governmentIdNumber')  // admin can see the ID number
+      .select('+verification.governmentIdNumber')
       .sort({ 'verification.submittedAt': 1 });
     res.json({ users });
   } catch (err) {
@@ -101,7 +101,7 @@ router.get('/admin/verifications/pending', auth, adminOnly, async (req, res) => 
 // ---- ADMIN: approve / reject a seller ----
 router.post('/admin/verify/:userId', auth, adminOnly, async (req, res) => {
   try {
-    const { decision, rejectionReason } = req.body;  // 'approve' | 'reject'
+    const { decision, rejectionReason } = req.body;
     if (!['approve', 'reject'].includes(decision)) {
       return res.status(400).json({ error: "decision must be 'approve' or 'reject'." });
     }

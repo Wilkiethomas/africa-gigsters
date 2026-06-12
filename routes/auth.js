@@ -7,10 +7,10 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-// Tight limiter on auth attempts — ENABLED from day one this time.
+// Tight limiter on auth attempts.
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,                     // 10 attempts per IP per 15 min
+  max: 10,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many login attempts. Please try again in a few minutes.' }
@@ -74,7 +74,6 @@ router.post(
     try {
       const { email, password } = req.body;
 
-      // password is select:false, so explicitly select it here
       const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
       if (!user) {
         return res.status(401).json({ error: 'Invalid email or password.' });

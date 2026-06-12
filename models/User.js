@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
     completedOrders: { type: Number, default: 0 }
   },
 
-  // ---- Seller verification (NEW in Lesson 2) ----
+  // ---- Seller verification ----
   verificationStatus: {
     type: String,
     enum: ['unverified', 'pending', 'verified', 'rejected'],
@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
   // ---- Account / platform ----
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   isVerified: { type: Boolean, default: false },
-  balance: { type: Number, default: 0 },
+  balance: { type: Number, default: 0 },   // seller earnings in CENTS
 
   createdAt: { type: Date, default: Date.now }
 }, { timestamps: true });

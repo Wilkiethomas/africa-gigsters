@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 /**
  * Package — a pricing tier inside a Gig.
  * Sellers can offer 1, 2, or 3 packages (basic / standard / premium).
- * One package = flat-price gig. Three packages = full Fiverr-style tiers.
  */
 const packageSchema = new mongoose.Schema({
   tier: {
@@ -36,7 +35,7 @@ const gigSchema = new mongoose.Schema({
   subcategory: { type: String, default: '' },
   tags: [{ type: String, lowercase: true, trim: true }],
 
-  // ---- Media (URLs — Cloudflare R2 in a future lesson) ----
+  // ---- Media ----
   images: [{ type: String }],
   video: { type: String, default: '' },
 
@@ -49,12 +48,12 @@ const gigSchema = new mongoose.Schema({
     }
   },
 
-  // ---- Optional extras (Fiverr-style) ----
+  // ---- Optional extras ----
   faqs: [{
     question: { type: String, maxlength: 200 },
     answer:   { type: String, maxlength: 500 }
   }],
-  requirements: [{ type: String, maxlength: 300 }],  // questions seller asks the buyer
+  requirements: [{ type: String, maxlength: 300 }],
 
   // ---- Lifecycle ----
   status: {
@@ -64,7 +63,7 @@ const gigSchema = new mongoose.Schema({
     index: true
   },
 
-  // ---- Stats (updated by other systems later) ----
+  // ---- Stats ----
   views:        { type: Number, default: 0 },
   ordersCount:  { type: Number, default: 0 },
   rating:       { type: Number, default: 0 },
@@ -72,16 +71,14 @@ const gigSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Full-text search across title, description, tags.
-// Mongo will build a search index for fast keyword queries.
 gigSchema.index({ title: 'text', description: 'text', tags: 'text' });
 
-// Virtual: lowest package price (so the catalog can show "starting at $X")
+// Virtual: lowest package price
 gigSchema.virtual('startingPrice').get(function () {
   if (!this.packages || this.packages.length === 0) return 0;
   return Math.min(...this.packages.map(p => p.price));
 });
 
-// Include virtuals in JSON responses
 gigSchema.set('toJSON', { virtuals: true });
 
 module.exports = mongoose.model('Gig', gigSchema);

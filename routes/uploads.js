@@ -8,8 +8,7 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 /**
- * Multer config: keep uploaded files in memory (we hand them straight to R2),
- * cap each file at 10 MB, and only accept image MIME types.
+ * Multer config: memory storage, 10 MB cap, images only.
  */
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -24,8 +23,7 @@ const upload = multer({
 });
 
 /**
- * Lazy-init the R2 client. The server can boot fine without R2 credentials —
- * the upload routes will just refuse with a clean error until they're set.
+ * Lazy-init the R2 client.
  *
  * IMPORTANT: For EU / FedRAMP buckets, Cloudflare requires a jurisdiction-
  * specific endpoint (e.g. <account>.eu.r2.cloudflarestorage.com). We pick
@@ -38,7 +36,7 @@ function getS3() {
     return null;
   }
   const jurisdiction = (process.env.R2_JURISDICTION || '').toLowerCase().trim();
-  const sub = jurisdiction ? `${jurisdiction}.` : '';   // 'eu.' or 'fedramp.' or ''
+  const sub = jurisdiction ? `${jurisdiction}.` : '';
   s3 = new S3Client({
     region: 'auto',
     endpoint: `https://${process.env.R2_ACCOUNT_ID}.${sub}r2.cloudflarestorage.com`,
@@ -50,11 +48,7 @@ function getS3() {
   return s3;
 }
 
-/**
- * Unique filename: timestamp-random.ext
- * Stops two users overwriting each other if they both upload "image.jpg",
- * and makes URLs unguessable (you can't sequentially scrape gig images).
- */
+/** Unique filename: timestamp-random.ext */
 function generateFilename(originalName) {
   const ext = (path.extname(originalName || '') || '.jpg').toLowerCase();
   const random = crypto.randomBytes(16).toString('hex');
@@ -68,7 +62,6 @@ async function uploadToR2(file, userId) {
   if (!client) throw new Error('Image uploads are not configured on this server.');
 
   const filename = generateFilename(file.originalname);
-  // Path scheme: gigs/<userId>/<filename> — easy to attribute, easy to clean
   const key = `gigs/${userId}/${filename}`;
 
   await client.send(new PutObjectCommand({
@@ -76,13 +69,13 @@ async function uploadToR2(file, userId) {
     Key: key,
     Body: file.buffer,
     ContentType: file.mimetype,
-    CacheControl: 'public, max-age=31536000'  // cache for 1 year — images don't change
+    CacheControl: 'public, max-age=31536000'
   }));
 
   return `${process.env.R2_PUBLIC_URL}/${key}`;
 }
 
-/** Translate Multer's error codes into clean JSON errors for the user. */
+/** Translate Multer's error codes into clean JSON errors. */
 function handleMulterError(err) {
   if (!err) return null;
   if (err.code === 'LIMIT_FILE_SIZE') return 'Each image must be 10 MB or smaller.';
@@ -118,7 +111,6 @@ router.post('/images', auth, (req, res) => {
     }
 
     try {
-      // Upload in parallel — much faster than sequentially for multiple files
       const urls = await Promise.all(
         req.files.map(file => uploadToR2(file, req.user._id))
       );

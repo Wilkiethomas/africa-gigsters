@@ -124,6 +124,12 @@
   .badge.draft{background:var(--cream-2);color:var(--ink-soft)}
   .badge.published{background:#E4F0E9;color:var(--green);border-color:#bfdccd}
   .badge.paused{background:#FBE6DD;color:#9c3211;border-color:#f0a675}
+  .badge.pending_payment{background:var(--cream-2);color:var(--ink-soft)}
+  .badge.in_progress{background:#E3EDF7;color:#1D4E89;border-color:#A8C6E8}
+  .badge.delivered{background:#FFF6E0;color:#7a5500;border-color:#E0A024}
+  .badge.revision_requested{background:#FBE6DD;color:#9c3211;border-color:#f0a675}
+  .badge.completed{background:#E4F0E9;color:var(--green);border-color:#bfdccd}
+  .badge.cancelled{background:#F2E8E8;color:#8a4444;border-color:#d8b5b5}
   .avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--terra));display:grid;place-items:center;color:#fff;font-weight:700;font-size:20px;flex-shrink:0}
 
   /* Gig grid (catalog) */
@@ -184,7 +190,8 @@
   .gigs-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
   .gig-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;background:var(--cream);border:1px solid var(--line);border-radius:12px;flex-wrap:wrap}
   .gig-row .left{display:flex;align-items:center;gap:14px;flex:1;min-width:240px}
-  .gig-row .left .thumb{width:50px;height:50px;background:linear-gradient(135deg,var(--cream-2),var(--terra-soft));border-radius:8px;flex-shrink:0}
+  .gig-row .left .thumb{width:50px;height:50px;background:linear-gradient(135deg,var(--cream-2),var(--terra-soft));border-radius:8px;flex-shrink:0;overflow:hidden}
+  .gig-row .left .thumb img{width:100%;height:100%;object-fit:cover}
   .gig-row .meta-row{font-size:13px;color:var(--ink-soft)}
   .gig-row .actions{display:flex;gap:8px;flex-wrap:wrap}
 
@@ -200,14 +207,44 @@
   .upload-btn{display:grid;place-items:center;aspect-ratio:1;border:2px dashed var(--line);border-radius:10px;cursor:pointer;color:var(--ink-soft);font-size:12.5px;font-weight:600;text-align:center;padding:8px;transition:border-color .15s,color .15s;line-height:1.3}
   .upload-btn:hover{border-color:var(--terra);color:var(--terra)}
   .upload-btn input{display:none}
-  .gig-card .thumb img{width:100%;height:100%;object-fit:cover}
-  .gig-row .left .thumb{overflow:hidden;background:linear-gradient(135deg,var(--cream-2),var(--terra-soft))}
-  .gig-row .left .thumb img{width:100%;height:100%;object-fit:cover}
 
-  @media(max-width:780px){
-    .nav-mid{display:none}
-    .browse-head{gap:10px}
-  }
+  /* Orders */
+  .order-tabs{display:flex;background:var(--cream-2);border-radius:14px;padding:4px;margin-bottom:22px;max-width:340px}
+  .order-tab{flex:1;padding:10px 16px;border-radius:10px;text-align:center;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-soft)}
+  .order-tab.active{background:var(--white);color:var(--green);box-shadow:0 2px 6px rgba(0,0,0,.05)}
+  .order-card{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px;background:var(--white);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;cursor:pointer;transition:box-shadow .15s;flex-wrap:wrap}
+  .order-card:hover{box-shadow:var(--shadow)}
+  .order-card .o-left{display:flex;align-items:center;gap:14px;flex:1;min-width:250px}
+  .order-card .o-thumb{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--cream-2),var(--terra-soft));flex-shrink:0;overflow:hidden}
+  .order-card .o-thumb img{width:100%;height:100%;object-fit:cover}
+  .order-card .o-title{font-weight:600;font-size:14.5px;line-height:1.35}
+  .order-card .o-sub{font-size:13px;color:var(--ink-soft);margin-top:3px}
+  .order-card .o-right{text-align:right}
+  .order-card .o-amount{font-family:'Fraunces';font-weight:700;font-size:19px;color:var(--green)}
+
+  /* Order detail */
+  .order-detail{max-width:820px;margin:30px auto;padding:0 22px}
+  .od-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .od-head h2{font-size:clamp(22px,3vw,30px)}
+  .od-num{font-size:13px;color:var(--ink-soft);margin-top:4px}
+  .timeline{display:flex;gap:0;margin:22px 0;flex-wrap:wrap}
+  .tl-step{flex:1;min-width:90px;text-align:center;position:relative;padding-top:26px;font-size:12px;color:var(--ink-soft)}
+  .tl-step::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--cream-2);border:2px solid var(--line);position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:2}
+  .tl-step::after{content:'';position:absolute;top:7px;left:-50%;width:100%;height:2px;background:var(--line);z-index:1}
+  .tl-step:first-child::after{display:none}
+  .tl-step.done::before{background:var(--green);border-color:var(--green)}
+  .tl-step.done::after{background:var(--green)}
+  .tl-step.current::before{background:var(--terra);border-color:var(--terra);box-shadow:0 0 0 4px rgba(217,98,43,.2)}
+  .tl-step.done,.tl-step.current{color:var(--ink);font-weight:600}
+  .od-section{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+  .od-section h4{font-family:'Plus Jakarta Sans';font-weight:700;font-size:15px;margin-bottom:10px}
+  .od-section .body-text{font-size:14.5px;color:var(--ink-soft);white-space:pre-wrap;line-height:1.6}
+  .od-files{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .od-files img{width:110px;height:110px;object-fit:cover;border-radius:10px;border:1px solid var(--line);cursor:pointer}
+  .od-amounts{display:flex;gap:24px;flex-wrap:wrap}
+  .od-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+  @media(max-width:780px){.nav-mid{display:none}.browse-head{gap:10px}}
   @media(max-width:600px){
     .hero{padding:48px 0 40px}
     .nav-actions .btn-ghost{display:none}
@@ -362,6 +399,26 @@
   </div>
 </main>
 
+<!-- ============ ORDERS LIST ============ -->
+<main id="view-orders" class="hidden">
+  <section class="section">
+    <div class="wrap">
+      <h2 class="display">Orders</h2>
+      <p class="lead" id="ordersLead">Your purchases and sales, all in one place.</p>
+      <div class="order-tabs">
+        <div class="order-tab active" id="tabBuying" onclick="switchOrderTab('buyer')">Buying</div>
+        <div class="order-tab" id="tabSelling" onclick="switchOrderTab('seller')">Selling</div>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ ORDER DETAIL ============ -->
+<main id="view-order" class="hidden">
+  <div class="order-detail" id="orderDetailBody"></div>
+</main>
+
 <!-- ============ AUTH MODAL ============ -->
 <div class="overlay hidden" id="authOverlay">
   <div class="modal">
@@ -418,13 +475,13 @@
 <footer class="site">
   <div class="wrap foot">
     <span>© 2026 Africa Gigsters — built for African talent.</span>
-    <span id="footVersion">v1.2 · Gallery & R2 uploads</span>
+    <span id="footVersion">v1.3 · Orders & secure payments</span>
   </div>
 </footer>
 
 <script>
 /* ============================================================
-   Africa Gigsters — frontend (Lesson 2: Gigs & catalogue)
+   Africa Gigsters — frontend (Lesson 4: Orders & payments)
    ============================================================ */
 const API = '';
 let token = localStorage.getItem('ag_token') || null;
@@ -432,6 +489,8 @@ let currentUser = null;
 let CATEGORIES = [];
 let currentGig = null;
 let currentFilter = { q: '', category: '' };
+let currentOrderRole = 'buyer';
+let currentOrder = null;
 
 /* ---------- API helper ---------- */
 async function api(path, method = 'GET', body) {
@@ -448,7 +507,7 @@ async function api(path, method = 'GET', body) {
 
 /* ---------- View routing ---------- */
 function go(view) {
-  ['home','dash','browse','gig','create'].forEach(v => {
+  ['home','dash','browse','gig','create','orders','order'].forEach(v => {
     document.getElementById('view-' + v).classList.toggle('hidden', v !== view);
   });
   window.scrollTo(0, 0);
@@ -532,7 +591,7 @@ async function submitVerification(){
     currentUser = data.user;
     closeVerify();
     renderDash();
-    alert('Verification submitted! We\'ll review it within 1–2 days.');
+    alert('Verification submitted! We\u2019ll review it within 1\u20132 days.');
   } catch(e){ showMsg('verifyMsg', e.message); }
 }
 
@@ -549,9 +608,8 @@ async function loadGigs(){
   const sortEl = document.getElementById('sortSelect');
   if (sortEl) params.set('sort', sortEl.value);
 
-  // Title
   let title = 'All gigs';
-  if (currentFilter.q) title = `Results for “${currentFilter.q}”`;
+  if (currentFilter.q) title = `Results for \u201C${currentFilter.q}\u201D`;
   else if (currentFilter.category) {
     const cat = CATEGORIES.find(c => c.slug === currentFilter.category);
     title = cat ? `${cat.emoji} ${cat.name}` : currentFilter.category;
@@ -560,7 +618,6 @@ async function loadGigs(){
   document.getElementById('browseCount').textContent = 'Loading…';
   document.getElementById('gigGrid').innerHTML = '';
 
-  // Render category chips
   renderCategoryFilter();
 
   try {
@@ -634,7 +691,6 @@ function renderGigDetail(g){
 
   document.getElementById('gigDesc').textContent = g.description;
 
-  // Gallery: show first image as main, or fall back to emoji
   const galleryEl = document.getElementById('gigGallery');
   if (g.images && g.images.length > 0) {
     galleryEl.innerHTML = `<img src="${g.images[0]}" alt="${escapeAttr(g.title)}" />`;
@@ -642,16 +698,13 @@ function renderGigDetail(g){
     galleryEl.innerHTML = '🎨';
   }
 
-  // FAQs
   const faqsEl = document.getElementById('gigFaqs');
   if (g.faqs && g.faqs.length){
     faqsEl.innerHTML = '<h3 style="font-family:Plus Jakarta Sans;font-weight:700;margin-top:30px;margin-bottom:12px">FAQ</h3>' +
       g.faqs.map(f => `<div style="margin-bottom:14px"><b>${escapeHtml(f.question)}</b><div style="color:var(--ink-soft);margin-top:4px">${escapeHtml(f.answer)}</div></div>`).join('');
   } else { faqsEl.innerHTML = ''; }
 
-  // Packages
   const tabs = document.getElementById('pkgTabs');
-  const body = document.getElementById('pkgBody');
   tabs.innerHTML = g.packages.map((p, i) => `<div class="pkg-tab ${i===0?'active':''}" onclick="showPkg(${i})">${p.tier}</div>`).join('');
   showPkg(0);
 }
@@ -670,11 +723,333 @@ function showPkg(i){
       <div style="flex:1"><b>${p.revisions}</b>revision${p.revisions===1?'':'s'}</div>
     </div>
     ${features ? `<ul class="features">${features}</ul>` : ''}
-    <button class="btn btn-primary" style="width:100%" onclick="orderGig(${i})">Continue ($${(p.price/100).toFixed(2)})</button>`;
+    <button class="btn btn-primary" style="width:100%" id="orderBtn" onclick="orderGig(${i})">Continue ($${(p.price/100).toFixed(2)})</button>`;
 }
-function orderGig(idx){
+
+/* ---------- ORDER: start checkout ---------- */
+async function orderGig(idx){
   if (!requireAuth()) return;
-  alert('Order flow ships in the next lesson — escrow, delivery, reviews. For now, the catalog is live!');
+  const g = currentGig;
+  const p = g.packages[idx];
+  if (g.seller && g.seller._id && currentUser && g.seller._id === currentUser._id) {
+    alert('You cannot order your own gig.');
+    return;
+  }
+  const btn = document.getElementById('orderBtn');
+  if (btn){ btn.disabled = true; btn.textContent = 'Starting secure checkout…'; }
+  try {
+    const data = await api('/api/orders/checkout', 'POST', {
+      gigSlug: g.slug,
+      tier: p.tier
+    });
+    // Hand the buyer to Stripe's hosted payment page
+    window.location.href = data.url;
+  } catch(e){
+    alert(e.message);
+    if (btn){ btn.disabled = false; btn.textContent = `Continue ($${(p.price/100).toFixed(2)})`; }
+  }
+}
+
+/* ---------- ORDERS: list view ---------- */
+function switchOrderTab(role){
+  currentOrderRole = role;
+  document.getElementById('tabBuying').classList.toggle('active', role === 'buyer');
+  document.getElementById('tabSelling').classList.toggle('active', role === 'seller');
+  loadOrders();
+}
+async function openOrders(role){
+  if (!requireAuth()) return;
+  currentOrderRole = role || 'buyer';
+  document.getElementById('tabBuying').classList.toggle('active', currentOrderRole === 'buyer');
+  document.getElementById('tabSelling').classList.toggle('active', currentOrderRole === 'seller');
+  go('orders');
+  loadOrders();
+}
+async function loadOrders(){
+  const list = document.getElementById('ordersList');
+  list.innerHTML = '<p style="color:var(--ink-soft)">Loading…</p>';
+  try {
+    const data = await api('/api/orders/my?role=' + currentOrderRole);
+    if (data.orders.length === 0){
+      list.innerHTML = `<div style="text-align:center;padding:50px 20px;color:var(--ink-soft)">
+        ${currentOrderRole === 'buyer'
+          ? 'No purchases yet. <a style="color:var(--terra);font-weight:600;cursor:pointer" onclick="loadGigs();go(\u0027browse\u0027)">Browse the marketplace</a> to find talent.'
+          : 'No sales yet. Keep your gigs sharp and they\u2019ll come!'}
+      </div>`;
+      return;
+    }
+    list.innerHTML = data.orders.map(renderOrderCard).join('');
+  } catch(e){
+    list.innerHTML = `<p style="color:#9c3211">${escapeHtml(e.message)}</p>`;
+  }
+}
+function statusLabel(s){
+  return ({
+    pending_payment: 'Awaiting payment',
+    in_progress: 'In progress',
+    delivered: 'Delivered',
+    revision_requested: 'Revision requested',
+    completed: 'Completed',
+    cancelled: 'Cancelled'
+  })[s] || s;
+}
+function renderOrderCard(o){
+  const other = currentOrderRole === 'buyer' ? o.seller : o.buyer;
+  const otherName = (other && other.name) || '—';
+  const snap = o.gigSnapshot || {};
+  const money = currentOrderRole === 'seller'
+    ? `$${(o.sellerEarnings/100).toFixed(2)}`
+    : `$${(o.amount/100).toFixed(2)}`;
+  const thumb = snap.image
+    ? `<div class="o-thumb"><img src="${snap.image}" alt="" /></div>`
+    : `<div class="o-thumb"></div>`;
+  return `
+    <div class="order-card" onclick="openOrder('${o._id}')">
+      <div class="o-left">
+        ${thumb}
+        <div>
+          <div class="o-title">${escapeHtml(snap.title || 'Gig')}</div>
+          <div class="o-sub">${o.orderNumber} · ${currentOrderRole === 'buyer' ? 'Seller' : 'Buyer'}: ${escapeHtml(otherName)} · ${snap.packageTier || ''}</div>
+        </div>
+      </div>
+      <div class="o-right">
+        <div class="o-amount">${money}</div>
+        <span class="badge ${o.status}">${statusLabel(o.status)}</span>
+      </div>
+    </div>`;
+}
+
+/* ---------- ORDER: detail view ---------- */
+async function openOrder(id){
+  go('order');
+  document.getElementById('orderDetailBody').innerHTML = '<p style="color:var(--ink-soft)">Loading…</p>';
+  try {
+    const data = await api('/api/orders/' + id);
+    currentOrder = data.order;
+    renderOrderDetail(data.order);
+  } catch(e){
+    document.getElementById('orderDetailBody').innerHTML = `<p style="color:#9c3211">${escapeHtml(e.message)}</p>`;
+  }
+}
+
+function renderOrderDetail(o){
+  const isBuyer = currentUser && o.buyer && o.buyer._id === currentUser._id;
+  const isSeller = currentUser && o.seller && o.seller._id === currentUser._id;
+  const snap = o.gigSnapshot || {};
+  const other = isBuyer ? o.seller : o.buyer;
+
+  // Timeline
+  const steps = ['in_progress', 'delivered', 'completed'];
+  const labels = { in_progress: 'In progress', delivered: 'Delivered', completed: 'Completed' };
+  const effectiveStatus = o.status === 'revision_requested' ? 'in_progress' : o.status;
+  const currentIdx = steps.indexOf(effectiveStatus);
+  let timeline = '';
+  if (o.status === 'cancelled') {
+    timeline = `<div style="text-align:center;padding:14px;background:#F2E8E8;border-radius:10px;color:#8a4444;font-weight:600">This order was cancelled${o.cancelledAt ? ' on ' + new Date(o.cancelledAt).toLocaleDateString() : ''}.</div>`;
+  } else if (o.status === 'pending_payment') {
+    timeline = `<div style="text-align:center;padding:14px;background:var(--cream-2);border-radius:10px;color:var(--ink-soft);font-weight:600">Awaiting payment — complete checkout to start this order.</div>`;
+  } else {
+    timeline = '<div class="timeline">' + steps.map((s, i) => {
+      let cls = '';
+      if (i < currentIdx || o.status === 'completed' && i <= currentIdx) cls = 'done';
+      else if (i === currentIdx) cls = o.status === 'completed' ? 'done' : 'current';
+      return `<div class="tl-step ${cls}">${labels[s]}</div>`;
+    }).join('') + '</div>';
+    if (o.status === 'revision_requested') {
+      timeline += `<div style="text-align:center;padding:10px;background:#FBE6DD;border-radius:10px;color:#9c3211;font-size:13.5px;font-weight:600;margin-top:-8px;margin-bottom:14px">Revision requested — awaiting an updated delivery.</div>`;
+    }
+  }
+
+  // Amounts
+  const amounts = isSeller
+    ? `<div class="stat"><div class="n">$${(o.sellerEarnings/100).toFixed(2)}</div><div class="l">You earn (after 20% fee)</div></div>
+       <div class="stat"><div class="n">$${(o.amount/100).toFixed(2)}</div><div class="l">Buyer paid</div></div>`
+    : `<div class="stat"><div class="n">$${(o.amount/100).toFixed(2)}</div><div class="l">Total paid</div></div>`;
+
+  // Requirements section
+  let requirementsHtml = `
+    <div class="od-section">
+      <h4>📋 Requirements / brief</h4>
+      ${o.requirements
+        ? `<div class="body-text">${escapeHtml(o.requirements)}</div>`
+        : `<div class="body-text" style="font-style:italic">No requirements submitted yet.</div>`}
+      ${isBuyer && ['in_progress','revision_requested'].includes(o.status) ? `
+        <div class="field" style="margin-top:14px"><label>${o.requirements ? 'Update your brief' : 'Tell the seller what you need'}</label>
+          <textarea id="reqText" rows="4" placeholder="Describe your project, preferences, anything the seller needs to know…">${escapeHtml(o.requirements)}</textarea></div>
+        <button class="btn btn-ghost btn-sm" onclick="saveRequirements()">Save brief</button>` : ''}
+    </div>`;
+
+  // Delivery section
+  let deliveryHtml = '';
+  if (o.delivery && o.delivery.deliveredAt) {
+    const files = (o.delivery.files || []).map(f =>
+      `<img src="${f}" alt="delivery file" onclick="window.open('${f}','_blank')" />`).join('');
+    deliveryHtml = `
+      <div class="od-section">
+        <h4>📦 Delivery${o.delivery.deliveredAt ? ' · ' + new Date(o.delivery.deliveredAt).toLocaleString() : ''}</h4>
+        <div class="body-text">${escapeHtml(o.delivery.message)}</div>
+        ${files ? `<div class="od-files">${files}</div>` : ''}
+      </div>`;
+  }
+
+  // Seller deliver form
+  let deliverFormHtml = '';
+  if (isSeller && ['in_progress','revision_requested'].includes(o.status)) {
+    deliverFormHtml = `
+      <div class="od-section">
+        <h4>🚀 Deliver your work</h4>
+        <div class="form-msg" id="deliverMsg"></div>
+        <div class="field"><label>Delivery message</label>
+          <textarea id="deliverText" rows="4" placeholder="Describe what you're delivering, how to use it, anything the buyer should know…"></textarea></div>
+        <p class="muted" style="font-size:13px">Attach images (optional):</p>
+        <div class="upload-grid" id="deliverFiles"></div>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="submitDelivery()">Deliver now</button>
+      </div>`;
+  }
+
+  // Buyer action buttons
+  let buyerActions = '';
+  if (isBuyer && o.status === 'delivered') {
+    const revsLeft = (snap.revisions || 0) - (o.revisionsUsed || 0);
+    buyerActions = `
+      <div class="od-section">
+        <h4>Your move</h4>
+        <p class="muted" style="font-size:13.5px">Approve to release payment to the seller, or request a revision${revsLeft > 0 ? ` (${revsLeft} left)` : ' (none left)'}.</p>
+        <div class="od-actions">
+          <button class="btn btn-primary" onclick="approveOrder()">✓ Approve &amp; release payment</button>
+          ${revsLeft > 0 ? `<button class="btn btn-ghost" onclick="requestRevision()">Request a revision</button>` : ''}
+        </div>
+      </div>`;
+  }
+  if (isBuyer && o.status === 'in_progress') {
+    buyerActions += `
+      <div class="od-section" style="border-style:dashed">
+        <p class="muted" style="font-size:13px;margin:0">Changed your mind? You can cancel for a full refund any time before delivery.
+        <a style="color:#9c3211;font-weight:600;cursor:pointer" onclick="cancelOrder()">Cancel this order</a></p>
+      </div>`;
+  }
+
+  document.getElementById('orderDetailBody').innerHTML = `
+    <div class="od-head">
+      <div>
+        <h2 class="display">${escapeHtml(snap.title || 'Order')}</h2>
+        <div class="od-num">${o.orderNumber} · ${snap.packageTier || ''} package · ${isBuyer ? 'Seller' : 'Buyer'}: <b>${escapeHtml((other && other.name) || '—')}</b></div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openOrders('${isBuyer ? 'buyer' : 'seller'}')">← All orders</button>
+    </div>
+    ${timeline}
+    <div class="od-section"><div class="od-amounts">${amounts}
+      ${o.dueAt && ['in_progress','revision_requested'].includes(o.status) ? `<div class="stat"><div class="n" style="font-size:20px">${new Date(o.dueAt).toLocaleDateString()}</div><div class="l">Due date</div></div>` : ''}
+    </div></div>
+    ${requirementsHtml}
+    ${deliveryHtml}
+    ${deliverFormHtml}
+    ${buyerActions}
+  `;
+
+  if (isSeller && ['in_progress','revision_requested'].includes(o.status)) {
+    deliveryDraft = [];
+    renderDeliveryFiles();
+  }
+}
+
+/* ---------- Order actions ---------- */
+async function saveRequirements(){
+  try {
+    const data = await api('/api/orders/' + currentOrder._id + '/requirements', 'POST', {
+      requirements: document.getElementById('reqText').value
+    });
+    currentOrder = data.order;
+    renderOrderDetail(data.order);
+  } catch(e){ alert(e.message); }
+}
+
+let deliveryDraft = [];
+function renderDeliveryFiles(){
+  const container = document.getElementById('deliverFiles');
+  if (!container) return;
+  const previews = deliveryDraft.map((img, i) => {
+    if (img.uploading) return `<div class="img-preview uploading">Uploading…</div>`;
+    return `<div class="img-preview"><img src="${img.url}" alt="" /><button class="remove-img" onclick="removeDeliveryFile(${i})">&times;</button></div>`;
+  }).join('');
+  const remaining = 5 - deliveryDraft.length;
+  const addBtn = remaining > 0
+    ? `<label class="upload-btn"><input type="file" multiple accept="image/jpeg,image/png,image/webp" onchange="handleDeliveryUpload(this)" />+ Attach<br>(${remaining} left)</label>`
+    : '';
+  container.innerHTML = previews + addBtn;
+}
+async function handleDeliveryUpload(input){
+  const files = Array.from(input.files);
+  input.value = '';
+  if (files.length === 0) return;
+  if (deliveryDraft.length + files.length > 5) { alert('Maximum 5 attachments.'); return; }
+  const startIdx = deliveryDraft.length;
+  files.forEach(() => deliveryDraft.push({ uploading: true }));
+  renderDeliveryFiles();
+  await Promise.all(files.map(async (file, i) => {
+    const slotIdx = startIdx + i;
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      const res = await fetch('/api/uploads/image', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
+        body: formData
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Upload failed');
+      deliveryDraft[slotIdx] = { url: data.url };
+    } catch (e) {
+      deliveryDraft[slotIdx] = { error: true };
+      alert(`Upload failed for ${file.name}: ${e.message}`);
+    }
+  }));
+  deliveryDraft = deliveryDraft.filter(i => !i.error);
+  renderDeliveryFiles();
+}
+function removeDeliveryFile(idx){
+  deliveryDraft.splice(idx, 1);
+  renderDeliveryFiles();
+}
+async function submitDelivery(){
+  clearMsg('deliverMsg');
+  if (deliveryDraft.some(f => f.uploading)) {
+    showMsg('deliverMsg', 'Please wait for attachments to finish uploading.');
+    return;
+  }
+  try {
+    const data = await api('/api/orders/' + currentOrder._id + '/deliver', 'POST', {
+      message: document.getElementById('deliverText').value,
+      files: deliveryDraft.filter(f => f.url).map(f => f.url)
+    });
+    currentOrder = data.order;
+    renderOrderDetail(data.order);
+  } catch(e){ showMsg('deliverMsg', e.message); }
+}
+async function approveOrder(){
+  if (!confirm('Approve this delivery? This releases payment to the seller and completes the order.')) return;
+  try {
+    const data = await api('/api/orders/' + currentOrder._id + '/approve', 'POST');
+    currentOrder = data.order;
+    renderOrderDetail(data.order);
+  } catch(e){ alert(e.message); }
+}
+async function requestRevision(){
+  const note = prompt('What needs to change? (Be specific so the seller can get it right.)');
+  if (!note) return;
+  try {
+    const data = await api('/api/orders/' + currentOrder._id + '/revision', 'POST', { note });
+    currentOrder = data.order;
+    renderOrderDetail(data.order);
+  } catch(e){ alert(e.message); }
+}
+async function cancelOrder(){
+  if (!confirm('Cancel this order? You will receive a full refund.')) return;
+  try {
+    const data = await api('/api/orders/' + currentOrder._id + '/cancel', 'POST');
+    currentOrder = data.order;
+    renderOrderDetail(data.order);
+  } catch(e){ alert(e.message); }
 }
 
 /* ---------- Create gig wizard ---------- */
@@ -687,9 +1062,7 @@ function openCreate(){
   }
   packagesDraft = [{ tier:'basic', title:'', description:'', price:'', deliveryDays:3, revisions:1, features:'' }];
   imagesDraft = [];
-  // Populate category dropdown
   document.getElementById('cCategory').innerHTML = CATEGORIES.map(c => `<option value="${c.slug}">${c.emoji} ${c.name}</option>`).join('');
-  // Reset fields
   ['cTitle','cTags','cDesc'].forEach(id => document.getElementById(id).value = '');
   clearMsg('createMsg');
   renderPkgBuilders();
@@ -727,7 +1100,7 @@ function removePkg(i){
   renderPkgBuilders();
 }
 
-/* ---------- Image uploads ---------- */
+/* ---------- Image uploads (gig gallery) ---------- */
 function renderImagesPreview(){
   const container = document.getElementById('imagesPreview');
   if (!container) return;
@@ -743,22 +1116,17 @@ function renderImagesPreview(){
     : '';
   container.innerHTML = previews + addBtn;
 }
-
 async function handleImageUpload(input){
   const files = Array.from(input.files);
-  input.value = '';  // reset so the same file can be re-selected if needed
+  input.value = '';
   if (files.length === 0) return;
   if (imagesDraft.length + files.length > 5) {
     alert('Maximum 5 images per gig.');
     return;
   }
-
-  // Place all placeholders first so the user sees progress for each file
   const startIdx = imagesDraft.length;
   files.forEach(() => imagesDraft.push({ uploading: true }));
   renderImagesPreview();
-
-  // Upload each file. We do these in parallel for speed.
   await Promise.all(files.map(async (file, i) => {
     const slotIdx = startIdx + i;
     try {
@@ -777,12 +1145,9 @@ async function handleImageUpload(input){
       alert(`Upload failed for ${file.name}: ${e.message}`);
     }
   }));
-
-  // Drop any failed slots
   imagesDraft = imagesDraft.filter(i => !i.error);
   renderImagesPreview();
 }
-
 function removeImage(idx){
   imagesDraft.splice(idx, 1);
   renderImagesPreview();
@@ -790,7 +1155,6 @@ function removeImage(idx){
 
 async function createGig(){
   clearMsg('createMsg');
-  // Don't let the user submit while images are still uploading
   if (imagesDraft.some(i => i.uploading)) {
     showMsg('createMsg', 'Please wait for images to finish uploading.');
     return;
@@ -857,6 +1221,7 @@ function renderNav(){
   if (currentUser){
     el.innerHTML = `
       <button class="btn btn-ghost btn-sm" onclick="loadGigs();go('browse')">Browse</button>
+      <button class="btn btn-ghost btn-sm" onclick="openOrders('buyer')">Orders</button>
       <button class="btn btn-ghost btn-sm" onclick="go('dash')">Dashboard</button>
       <button class="btn btn-primary btn-sm" onclick="logout()">Log out</button>`;
   } else {
@@ -912,7 +1277,6 @@ function renderDash(){
       <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px">${badges}</div>
     </div>`;
 
-  // Seller card
   if (currentUser.isSeller){
     let verifyAction = '';
     if (vs === 'unverified' || vs === 'rejected'){
@@ -922,10 +1286,17 @@ function renderDash(){
     }
     cards += `
       <div class="card">
+        <h3>💰 Earnings</h3>
+        <p>Your balance grows each time an order completes. Withdrawals coming soon.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="n">$${((currentUser.balance||0)/100).toFixed(2)}</div><div class="l">Available balance</div></div>
+          <div class="stat"><div class="n">${sp.completedOrders||0}</div><div class="l">Completed orders</div></div>
+        </div>
+      </div>
+      <div class="card">
         <h3>Seller stats</h3>
         <p>${(sp.skills||[]).join(' · ') || 'No skills listed yet'}</p>
         <div class="stat-row">
-          <div class="stat"><div class="n">${sp.completedOrders||0}</div><div class="l">Orders</div></div>
           <div class="stat"><div class="n">${(sp.rating||0).toFixed(1)}</div><div class="l">Rating</div></div>
           <div class="stat"><div class="n">${myGigs.filter(g=>g.status==='published').length}</div><div class="l">Live gigs</div></div>
         </div>
@@ -940,15 +1311,16 @@ function renderDash(){
       </div>`;
   }
 
-  // Browse card (always)
   cards += `
     <div class="card">
-      <h3>Find work to hire 🔎</h3>
-      <p>Browse the marketplace catalogue and find freelancers across Africa.</p>
-      <button class="btn btn-ghost btn-sm" onclick="loadGigs();go('browse')">Browse gigs</button>
+      <h3>Orders 📦</h3>
+      <p>Track your purchases${currentUser.isSeller ? ' and sales' : ''} from one place.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="openOrders('buyer')">My purchases</button>
+        ${currentUser.isSeller ? '<button class="btn btn-ghost btn-sm" onclick="openOrders(\u0027seller\u0027)">My sales</button>' : ''}
+      </div>
     </div>`;
 
-  // My gigs section (sellers only)
   if (currentUser.isSeller){
     cards += `
       <div class="card" style="grid-column:1/-1">
@@ -998,7 +1370,6 @@ function escapeAttr(s){ return escapeHtml(s); }
 
 /* ---------- Boot ---------- */
 async function init(){
-  // Load categories
   try {
     const data = await api('/api/gigs/meta/categories');
     CATEGORIES = data.categories;
@@ -1007,6 +1378,14 @@ async function init(){
   renderLandingCategories();
   renderNav();
 
+  // Handle Stripe redirect query params
+  const params = new URLSearchParams(window.location.search);
+  const orderParam = params.get('order');
+  if (orderParam) {
+    // Clean the URL so refreshes don't repeat the message
+    window.history.replaceState({}, '', '/');
+  }
+
   if (token){
     try {
       const data = await api('/api/auth/me');
@@ -1014,8 +1393,19 @@ async function init(){
       renderNav();
       await loadMyGigs();
       renderDash();
-      go('dash');
+
+      if (orderParam === 'success') {
+        openOrders('buyer');
+        setTimeout(() => alert('🎉 Payment received! Your order is now in progress. Add your requirements so the seller can get started.'), 400);
+      } else if (orderParam === 'cancelled') {
+        go('dash');
+        setTimeout(() => alert('Checkout was cancelled — no payment was taken.'), 400);
+      } else {
+        go('dash');
+      }
     } catch(e){ logout(); }
+  } else if (orderParam === 'success') {
+    openAuth('login');
   }
 }
 init();

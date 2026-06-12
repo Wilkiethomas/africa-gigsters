@@ -29,7 +29,7 @@ async function auth(req, res, next) {
 }
 
 /**
- * Optional guard for admin-only routes (used once the admin panel exists).
+ * Optional guard for admin-only routes.
  */
 function adminOnly(req, res, next) {
   if (!req.user || req.user.role !== 'admin') {

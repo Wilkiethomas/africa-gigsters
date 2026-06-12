@@ -7,8 +7,6 @@ const router = express.Router();
 
 /**
  * Categories shipped with the platform.
- * (Stored here as a constant for now; a future lesson moves these to the DB
- *  so admins can edit them without redeploying.)
  */
 const CATEGORIES = [
   { slug: 'graphic-design',   name: 'Graphic Design',         emoji: '🎨' },
@@ -21,8 +19,7 @@ const CATEGORIES = [
   { slug: 'business',         name: 'Business',               emoji: '💼' }
 ];
 
-/** Build a URL-safe slug from a gig title, with a short random suffix
- *  to guarantee uniqueness without an unsightly counter. */
+/** Build a URL-safe slug from a gig title with a short random suffix. */
 function makeSlug(title) {
   const base = title.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
@@ -35,14 +32,10 @@ function makeSlug(title) {
 }
 
 /**
- * ROUTE ORDER MATTERS in Express.
- * Literal-path routes (/my, /categories, /seller/:username) MUST be declared
- * before the parameterised /:slug route — otherwise Express matches them
- * all as slugs.
+ * ROUTE ORDER MATTERS: literal paths before /:slug.
  */
 
 // ---------- READ (PUBLIC): browse the catalogue ----------
-// GET /api/gigs?q=...&category=...&sort=recent|rating|popular&page=1&limit=20
 router.get('/', async (req, res) => {
   try {
     const { q, category, sort = 'recent' } = req.query;
@@ -111,13 +104,10 @@ router.get('/:slug', async (req, res) => {
 
     if (!gig) return res.status(404).json({ error: 'Gig not found.' });
 
-    // Only show published gigs to the public.
-    // (Owners hit /api/gigs/my to see their drafts.)
     if (gig.status !== 'published') {
       return res.status(404).json({ error: 'Gig not found.' });
     }
 
-    // Fire-and-forget view increment — never block the response on it.
     Gig.updateOne({ _id: gig._id }, { $inc: { views: 1 } }).catch(() => {});
 
     res.json({ gig });
@@ -138,8 +128,6 @@ router.post('/', auth, async (req, res) => {
       packages, faqs, requirements, images, video
     } = req.body;
 
-    // Hand-validate the shape — Mongoose will catch the rest, but these
-    // produce friendlier error messages.
     if (!title || !description || !category) {
       return res.status(400).json({ error: 'Title, description, and category are required.' });
     }
@@ -165,7 +153,6 @@ router.post('/', auth, async (req, res) => {
 
     res.status(201).json({ gig });
   } catch (err) {
-    // Mongoose validation errors get a friendlier message
     if (err.name === 'ValidationError') {
       const first = Object.values(err.errors)[0];
       return res.status(400).json({ error: first.message });
@@ -219,7 +206,6 @@ router.post('/:id/publish', auth, async (req, res) => {
       return res.status(403).json({ error: 'This is not your gig.' });
     }
 
-    // Sanity-check the gig has its essentials before it goes public
     if (!gig.packages || gig.packages.length === 0) {
       return res.status(400).json({ error: 'Add at least one package before publishing.' });
     }
